@@ -94,6 +94,7 @@ typedef NS_ENUM(NSInteger, AWSServiceErrorType) {
 @property (nonatomic, strong, readonly) AWSEndpoint *endpoint;
 @property (nonatomic, readonly) NSString *userAgent;
 @property (nonatomic, readonly) BOOL localTestingEnabled;
+@property (nonatomic, readonly) BOOL pathStyle;
 
 + (NSString *)baseUserAgent;
 
@@ -117,6 +118,8 @@ typedef NS_ENUM(NSInteger, AWSServiceErrorType) {
            localTestingEnabled:(BOOL)localTestingEnabled;
 
 - (void)addUserAgentProductToken:(NSString *)productToken;
+
+- (void)setPathStyleAccess:(BOOL)pathStyle;
 
 @end
 

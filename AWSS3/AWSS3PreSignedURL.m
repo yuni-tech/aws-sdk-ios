@@ -262,7 +262,9 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
         //generate baseURL String (use virtualHostStyle if possible)
         //base url is not url encoded.
         NSString *keyPath = nil;
-        if (bucketName == nil || [bucketName aws_isVirtualHostedStyleCompliant]) {
+        if (self.configuration.pathStyle && bucketName) {
+            keyPath = (keyName == nil ? [NSString stringWithFormat:@"%@", bucketName] : [NSString stringWithFormat:@"%@/%@", bucketName, [keyName aws_stringWithURLEncodingPath]]);
+        } else if (bucketName == nil || [bucketName aws_isVirtualHostedStyleCompliant]) {
             keyPath = (keyName == nil ? @"" : [NSString stringWithFormat:@"%@", [keyName aws_stringWithURLEncodingPath]]);
         } else {
             keyPath = (keyName == nil ? [NSString stringWithFormat:@"%@", bucketName] : [NSString stringWithFormat:@"%@/%@", bucketName, [keyName aws_stringWithURLEncodingPath]]);
@@ -270,7 +272,16 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
 
         //generate correct hostName (use virtualHostStyle if possible)
         NSString *host = nil;
-        if (!self.configuration.localTestingEnabled &&
+        // or pathStyle if necessary (custom add)
+        if (self.configuration.pathStyle &&
+            bucketName &&
+            [bucketName aws_isVirtualHostedStyleCompliant]) {
+            if (isAccelerateModeEnabled) {
+                host = AWSS3PreSignedURLBuilderAcceleratedEndpoint;
+            } else {
+                host = endpoint.hostName;
+            }
+        } else if (!self.configuration.localTestingEnabled &&
             bucketName &&
             [bucketName aws_isVirtualHostedStyleCompliant]) {
             if (isAccelerateModeEnabled) {
@@ -294,7 +305,7 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
                          forRequestParameter:@"partNumber"];
         }
         NSString *portNumber = endpoint.portNumber != nil ? [NSString stringWithFormat:@":%@", endpoint.portNumber.stringValue]: @"";
-        AWSEndpoint *newEndpoint = [[AWSEndpoint alloc]initWithRegion:configuration.regionType service:AWSServiceS3 URL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@%@", endpoint.useUnsafeURL?@"http":@"https", host, portNumber]]];
+        AWSEndpoint *newEndpoint = [[AWSEndpoint alloc] initWithRegion:configuration.regionType service:AWSServiceS3 URL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@%@", endpoint.useUnsafeURL ? @"http" : @"https", host, portNumber]]];
         
         int32_t expireDuration = [expires timeIntervalSinceNow];
         if (expireDuration > 604800) {

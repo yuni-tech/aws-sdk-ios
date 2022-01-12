@@ -108,6 +108,7 @@ static NSString *const AWSServiceConfigurationUnknown = @"Unknown";
 @property (nonatomic, strong) AWSEndpoint *endpoint;
 @property (nonatomic, strong) NSArray *userAgentProductTokens;
 @property (nonatomic, assign) BOOL localTestingEnabled;
+@property (nonatomic, assign) BOOL pathStyle;
 @end
 
 @implementation AWSServiceConfiguration
@@ -160,6 +161,7 @@ static NSString *const AWSServiceConfigurationUnknown = @"Unknown";
         _endpoint = endpoint;
         _credentialsProvider = credentialsProvider;
         _localTestingEnabled = localTestingEnabled;
+        _pathStyle = NO;
     }
     return self;
 }
@@ -229,6 +231,12 @@ static NSMutableArray *_globalUserAgentPrefixes = nil;
     }
 }
 
+-(void)setPathStyleAccess:(BOOL)pathStyle {
+    if (pathStyle) {
+        _pathStyle = pathStyle;
+    }
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     AWSServiceConfiguration *configuration = [super copyWithZone:zone];
     configuration.regionType = self.regionType;
@@ -236,6 +244,7 @@ static NSMutableArray *_globalUserAgentPrefixes = nil;
     configuration.userAgentProductTokens = self.userAgentProductTokens;
     configuration.endpoint = self.endpoint;
     configuration.localTestingEnabled = self.localTestingEnabled;
+    configuration.pathStyle = self.pathStyle;
     return configuration;
 }
 

@@ -1,13 +1,51 @@
+---
 # AWS Mobile SDK for iOS CHANGELOG
 
 ## Unreleased
 
 -Features for next release
 
+## 2.27.1
+
+### Misc. Updates
+
+- **AWSCognito**
+  - Removed unused values from AWSCognitoIdentityProviderASF calculation. (See [PR #3985](https://github.com/aws-amplify/aws-sdk-ios/pull/3985))
+  
+- Model updates for the following services
+  - AWSTranscribe
+  - AWSConnect
+
+## 2.27.0
+
+### Breaking Changes
+
+- **AWSMobileClient**
+  - **Breaking Change** Remove the option to not signout when deleting a user.
+
 ### Bug Fixes
+
+- **AWSMobileClient**
+  - Prevent user from cancelling signout after account deletion with hosted UI. (See [PR #3965](https://github.com/aws-amplify/aws-sdk-ios/pull/3965))
+  - Fix issue that caused access token to be revoked when user canceled hosted UI signout. (See [PR #3964](https://github.com/aws-amplify/aws-sdk-ios/pull/3964))
+
+- **AWSCognitoAuth**
+  - Fixes memory leak in hostedUI. (See [PR #3969](https://github.com/aws-amplify/aws-sdk-ios/pull/3969))
 
 - **CI/CD**
   - Fixes CocoaPods release step which reports `pod repo update` to run after AWSCore is pushed (See [PR #3961](https://github.com/aws-amplify/aws-sdk-ios/pull/3961))
+
+- **AWSS3**
+  - Fixed an issue with Multi Part uploads when uploading from a file URL that contains a space (See [PR #3956](https://github.com/aws-amplify/aws-sdk-ios/pull/3956))
+
+### Misc. Updates
+
+- Model updates for the following services
+  - AWSLocation
+  - AWSPinpoint
+  - AWSTranscribe
+  - AWSRekognition
+  - **Breaking Change** AWSConnect
 
 ## 2.26.7
 

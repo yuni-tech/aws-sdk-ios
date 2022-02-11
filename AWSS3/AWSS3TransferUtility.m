@@ -760,6 +760,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     transferUtilityMultiPartUploadTask.uploadID = [task objectForKey:@"multi_part_id"];
     NSNumber *statusValue = [task objectForKey:@"status"];
     transferUtilityMultiPartUploadTask.status = [statusValue intValue];
+    transferUtilityMultiPartUploadTask.pathStyle = _configuration.pathStyle;
     return transferUtilityMultiPartUploadTask;
 }
 
@@ -1151,6 +1152,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     transferUtilityMultiPartUploadTask.retryCount = 0;
     transferUtilityMultiPartUploadTask.temporaryFileCreated = temporaryFileCreated;
     transferUtilityMultiPartUploadTask.status = AWSS3TransferUtilityTransferStatusInProgress;
+    transferUtilityMultiPartUploadTask.pathStyle = _configuration.pathStyle;
     
     //Get the size of the file and calculate the number of parts.
     NSError *nsError = nil;
@@ -1175,6 +1177,7 @@ static AWSS3TransferUtility *_defaultS3TransferUtility = nil;
     AWSS3CreateMultipartUploadRequest *uploadRequest = [AWSS3CreateMultipartUploadRequest new];
     uploadRequest.bucket = bucket;
     uploadRequest.key = key;
+    uploadRequest.pathStyle = self.configuration.pathStyle;
 
     [AWSS3CreateMultipartUploadRequest propagateHeaderInformation:uploadRequest requestHeaders:transferUtilityMultiPartUploadTask.expression.requestHeaders];
     
@@ -1904,6 +1907,7 @@ internalDictionaryToAddSubTaskTo: (NSMutableDictionary *) internalDictionaryToAd
     compReq.key = uploadTask.key;
     compReq.uploadId = uploadTask.uploadID;
     compReq.multipartUpload = multipartUpload;
+    compReq.pathStyle = uploadTask.pathStyle;
     
     return [self.s3 completeMultipartUpload:compReq];
 }
@@ -1913,6 +1917,7 @@ internalDictionaryToAddSubTaskTo: (NSMutableDictionary *) internalDictionaryToAd
     abortReq.bucket = uploadTask.bucket;
     abortReq.uploadId = uploadTask.uploadID;
     abortReq.key = uploadTask.key;
+    abortReq.pathStyle = uploadTask.pathStyle;
     return [self.s3 abortMultipartUpload:abortReq];
 }
 

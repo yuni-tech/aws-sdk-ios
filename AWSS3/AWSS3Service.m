@@ -192,11 +192,8 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
         networkingRequest.downloadingFileURL = request.downloadingFileURL;
 
         networkingRequest.HTTPMethod = HTTPMethod;
-		networkingRequest.requestSerializer = [[AWSS3RequestSerializer alloc] initWithJSONDefinition:[[AWSS3Resources sharedInstance] JSONObject]
-		 															     actionName:operationName];
-        networkingRequest.responseSerializer = [[AWSS3ResponseSerializer alloc] initWithJSONDefinition:[[AWSS3Resources sharedInstance] JSONObject]
-                                                                                             actionName:operationName
-                                                                                            outputClass:outputClass];
+        networkingRequest.requestSerializer = [[AWSS3RequestSerializer alloc] initWithJSONDefinition:[[AWSS3Resources sharedInstance] JSONObject] actionName:operationName pathStyle:request.pathStyle];
+        networkingRequest.responseSerializer = [[AWSS3ResponseSerializer alloc] initWithJSONDefinition:[[AWSS3Resources sharedInstance] JSONObject] actionName:operationName outputClass:outputClass];
         
         return [self.networking sendRequest:networkingRequest];
     }

@@ -52,6 +52,7 @@
 @property (strong, nonatomic) AWSS3TransferUtilityMultiPartUploadExpression *expression;
 @property (copy) NSString * uploadID;
 @property BOOL cancelled;
+@property BOOL pathStyle;
 @property BOOL temporaryFileCreated;
 @property NSMutableDictionary <NSNumber *, AWSS3TransferUtilityUploadSubTask *> *waitingPartsDictionary;
 @property (strong, nonatomic) NSMutableSet <AWSS3TransferUtilityUploadSubTask *> *completedPartsSet;

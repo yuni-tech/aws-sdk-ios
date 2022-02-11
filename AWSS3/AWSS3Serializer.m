@@ -22,13 +22,15 @@
 @property (nonatomic, strong) NSDictionary *serviceDefinitionJSON;
 @property (nonatomic, strong) NSString *actionName;
 @property (nonatomic, strong) id<AWSURLRequestSerializer> requestSerializer;
+@property (nonatomic, assign) BOOL pathStyle;
 
 @end
 
 @implementation AWSS3RequestSerializer
 
 - (instancetype)initWithJSONDefinition:(NSDictionary *)JSONDefinition
-                            actionName:(NSString *)actionName{
+                            actionName:(NSString *)actionName
+                             pathStyle:(BOOL)pathStyle {
     if (self = [super init]) {
 
         _serviceDefinitionJSON = JSONDefinition;
@@ -37,6 +39,7 @@
             return nil;
         }
         _actionName = actionName;
+        _pathStyle = pathStyle;
 
         //get and put bucket policy use json, while rest use xml
         if([[_actionName lowercaseString] isEqualToString:@"putbucketpolicy"]
@@ -64,6 +67,10 @@
 // Virtual host logic from Boto
 // https://github.com/boto/botocore/blob/08d0e5995284656895f5c8a0bddd8c386a8483c4/botocore/utils.py#L954
 - (void)updateRequestToUseVirtualHostURL:(NSMutableURLRequest *)request {
+    if (self.pathStyle) {
+        AWSDDLogDebug(@"Request must be pathstyle, continuing to use path-style URL");
+        return;
+    }
     if ([self isGetBucketLocationRequest:request]) {
         AWSDDLogDebug(@"Request is for bucket location request, continuing to use path-style URL");
         return;

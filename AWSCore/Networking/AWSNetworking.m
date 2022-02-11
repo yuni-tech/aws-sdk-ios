@@ -280,6 +280,7 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
     encodingBehaviors[@"downloadProgress"] = @(AWSMTLModelEncodingBehaviorExcluded);
     encodingBehaviors[@"internalRequest"] = @(AWSMTLModelEncodingBehaviorExcluded);
     encodingBehaviors[@"uploadProgress"] = @(AWSMTLModelEncodingBehaviorExcluded);
+    encodingBehaviors[@"pathStyle"] = @(AWSMTLModelEncodingBehaviorExcluded);
 
     return encodingBehaviors;
 }
@@ -287,6 +288,7 @@ NSString *const AWSNetworkingErrorDomain = @"com.amazonaws.AWSNetworkingErrorDom
 - (instancetype)init {
     if (self = [super init]) {
         _internalRequest = [AWSNetworkingRequest new];
+        _pathStyle = NO;
     }
 
     return self;

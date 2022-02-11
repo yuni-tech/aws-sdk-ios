@@ -19,7 +19,8 @@
 @interface AWSS3RequestSerializer : NSObject <AWSURLRequestSerializer>
 
 - (instancetype)initWithJSONDefinition:(NSDictionary *)JSONDefinition
-                            actionName:(NSString *)actionName;
+                            actionName:(NSString *)actionName
+                             pathStyle:(BOOL)pathStyle;
 
 @end
 

@@ -201,6 +201,7 @@ typedef NS_ENUM(NSInteger, AWSHTTPMethod) {
 @property (nonatomic, copy) AWSNetworkingDownloadProgressBlock downloadProgress;
 @property (nonatomic, assign, readonly, getter = isCancelled) BOOL cancelled;
 @property (nonatomic, strong) NSURL *downloadingFileURL;
+@property (nonatomic, assign) BOOL pathStyle;
 
 - (AWSTask *)cancel;
 - (AWSTask *)pause;
